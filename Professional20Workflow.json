@@ -1,0 +1,575 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Polish M&A advisory firm",
+        "formDescription": "Getting leads for a Polish M&A advisory firm.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Company Name",
+              "placeholder": "JohnDoeCompany",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Website",
+              "placeholder": "johndoe.com",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "User Message",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false,
+          "buttonLabel": "Next Page",
+          "path": "collect-leads",
+          "respondWithOptions": {
+            "values": {
+              "formSubmittedText": "You filled it dummy, proceed with your dau"
+            }
+          },
+          "ignoreBots": false,
+          "useWorkflowTimezone": true
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -592,
+        96
+      ],
+      "id": "32d4b881-860e-436f-bad3-d6f2648cb3ec",
+      "name": "Lead Capture Form",
+      "webhookId": "644dbe8d-2064-4737-bea8-6b9d899de61e",
+      "notesInFlow": true,
+      "notes": "Trigger node that activates when a new lead submits the form."
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1LWuWcquMsotbHxJc0yKDlGer5AhFo_-BSRpUXNOduJQ",
+          "mode": "list",
+          "cachedResultName": "n8n_collected_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LWuWcquMsotbHxJc0yKDlGer5AhFo_-BSRpUXNOduJQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LWuWcquMsotbHxJc0yKDlGer5AhFo_-BSRpUXNOduJQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Website": "={{ $json.message.content.domain }}",
+            "Company Name": "={{ $json.message.content.company_name }}",
+            "User Message": "={{ $('Switch').item.json['User Message'] }}",
+            "country": "={{ $json.message.content.country }}",
+            "employee count": "={{ $json.message.content.employee_count }}",
+            "AI score + justification": "={{ $json.message.content.ai_score_and_justification }}",
+            "pass/fail flag": "={{ $json.message.content.pass_fail_flag }}",
+            "High-Fit flag": "={{ $json.message.content.high_fit_flag }}"
+          },
+          "matchingColumns": [
+            "Website"
+          ],
+          "schema": [
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "User Message",
+              "displayName": "User Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "employee count",
+              "displayName": "employee count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AI score + justification",
+              "displayName": "AI score + justification",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pass/fail flag",
+              "displayName": "pass/fail flag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "High-Fit flag",
+              "displayName": "High-Fit flag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "cellFormat": "RAW",
+          "useAppend": false
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        896,
+        96
+      ],
+      "id": "15320b64-7324-4827-b88c-b829ca33005f",
+      "name": "Write to Google Sheet",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WaoFqypyxY7A5Zlx",
+          "name": "Google Sheets account"
+        }
+      },
+      "onError": "continueErrorOutput",
+      "notes": "Appends new rows or updates existing ones in Google Sheets using 'Website' as the matching column."
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a2e178b7-9557-4571-a41a-2b5fe5b93645",
+              "name": "Client Company Name",
+              "value": "={{ $json['Company Name'] }}",
+              "type": "string"
+            },
+            {
+              "id": "32f925fb-4e45-44d6-a226-30d08665f9d4",
+              "name": "Client Website",
+              "value": "={{ $json.Website }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "include": "except",
+        "excludeFields": "submittedAt, formMode, ['Company Name'], Website",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -368,
+        96
+      ],
+      "id": "374a5103-17c5-4741-a73e-d08f728687b3",
+      "name": "Normalize Input Fields",
+      "notes": "Standardizes and renames form fields for consistency."
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "18c75510-8f54-4066-9c67-167c7f246e22",
+                    "leftValue": "={{ (Math.random()) }}",
+                    "rightValue": 0.25,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lt"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Big Company"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "454caaf6-2746-4845-9fa8-c09c3916ad8f",
+                    "leftValue": "={{ (Math.random()) }}",
+                    "rightValue": 0.75,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lt"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Small Company"
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": false
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -144,
+        80
+      ],
+      "id": "c8652b4c-3cf5-4a22-90f0-24dd5ee0b653",
+      "name": "Mock Company Size Switch",
+      "alwaysOutputData": true,
+      "onError": "continueErrorOutput",
+      "notes": "Randomly routes input to simulate company size for testing purposes."
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"clearbit\": {\n    \"name\": \"{{ $json['Client Company Name'] }}\",\n    \"domain\": \"{{ $json['Client Website'] }}\",\n    \"employees\": 6,\n    \"industry\": \"HealthTech\",\n    \"tags\": [\"healthtech\", \"early-stage\"],\n    \"location\": \"Gda\u0144sk, Poland\",\n    \"foundedYear\": 2023\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        288
+      ],
+      "id": "e531d705-9295-487e-96fe-7fe650a5d4ae",
+      "name": "Mock Small Startup A",
+      "alwaysOutputData": false,
+      "notesInFlow": true,
+      "notes": "Mock data for a small startup with few employees."
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"clearbit\": {\n    \"name\": \"{{ $('rename Columns').item.json['Client Company Name'] }}\",\n    \"domain\": \"{{ $('rename Columns').item.json['Client Website'] }}\",\n    \"employees\": 1200,\n    \"industry\": \"AI\",\n    \"tags\": [\"ai\", \"enterprise\", \"cloud\"],\n    \"location\": \"San Francisco, USA\",\n    \"foundedYear\": 2015\n  }\n}\n",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        -96
+      ],
+      "id": "0cf10e92-0b2f-4c01-8b06-28989d75cab4",
+      "name": "Mock Big Company A",
+      "notesInFlow": true,
+      "notes": "Mock data for a large company with many employees."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e5ba5ff2-f403-4498-8e58-b30b05c11762",
+              "leftValue": "={{ $json.clearbit.location.toLowerCase() }}",
+              "rightValue": "poland",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "9f951b16-9d72-44bf-8647-384b009dca92",
+              "leftValue": "={{ $json.clearbit.employees }}",
+              "rightValue": 25,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        304,
+        96
+      ],
+      "id": "9b3b86be-fd01-47e8-a1c0-5b588f210167",
+      "name": "Target Criteria Filter",
+      "notes": "Checks if the company meets basic M&A criteria: Polish location and more than 25 employees."
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"clearbit\": {\n    \"name\": \"{{ $('rename Columns').item.json['Client Company Name'] }}\",\n    \"domain\": \"{{ $('rename Columns').item.json['Client Website'] }}\",\n    \"employees\": 2000,\n    \"industry\": \"AI\",\n    \"tags\": [\"ai\", \"enterprise\", \"cloud\"],\n    \"location\": \"Krakow, Poland\",\n    \"foundedYear\": 2015\n  }\n}\n",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        96
+      ],
+      "id": "4cf91e88-4c99-4e0f-bdad-f5514f92ed0a",
+      "name": "Mock Big Company B",
+      "notesInFlow": true,
+      "notes": "Alternative mock data for a large company."
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"clearbit\": {\n    \"name\": \"{{ $json['Client Company Name'] }}\",\n    \"domain\": \"{{ $json['Client Website'] }}\",\n    \"employees\": 31,\n    \"industry\": \"HealthTech\",\n    \"tags\": [\"healthtech\", \"early-stage\"],\n    \"location\": \"Gda\u0144sk, Poland\",\n    \"foundedYear\": 2023\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        96,
+        448
+      ],
+      "id": "36dedbe5-5596-4362-a9b6-407a898107b8",
+      "name": "Mock Small Startup B",
+      "alwaysOutputData": false,
+      "notesInFlow": true,
+      "notes": "Alternative mock data for a small startup."
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are evaluating inbound leads for a Polish M&A advisory firm.\nBased on the company name, website, and user message, score this lead from 1-10 for fit with a B2B SaaS investor. Include a one-sentence reason. Return a clean JSON object suitable for writing directly to a Google Sheet. Include only the following fields and appropriate values:\n\n- company_name\n- domain\n- industry\n- employee_count\n- country (extract only the country from the location string)\n- user_message (this is from the inbound lead form)\n- ai_score_and_justification (evaluate relevance of company to M&A target criteria, give score out of 100 and explain why)\n- pass_fail_flag (true/false)\n- high_fit_flag (true if company is an excellent fit, based on your judgment)\nHere is the data to evaluate:\nUser message: {{ $json['User Message'] }}\nCompany Name: {{ $json.clearbit.name }}\nompany Website: {{ $json.clearbit.domain }}\nNumber of employees:{{ $json.clearbit.employees }}\nIndustry:{{ $json.clearbit.industry }}\nLocation: {{ $json.clearbit.location }}\nFoundedYear: {{ $json.clearbit.foundedYear }}\n"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        512,
+        96
+      ],
+      "id": "7076665a-c02d-4d67-a1bb-e7c608f35063",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "HUAZsgxMaExXzixo",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "rename Columns",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "rename Columns": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Big Company",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Big Company1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Small Startup",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Small Startup1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Big Company": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Small Startup": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Big Company1": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Small Startup1": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "39bcc681-b904-4889-96bf-9cb3889e450b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "da304d8e345e6a6372efe6a610ad71d0184de1663c5a1439b6c3d0cd7698bb19"
+  },
+  "id": "JInQmnJHPOebmuky",
+  "tags": []
+}
