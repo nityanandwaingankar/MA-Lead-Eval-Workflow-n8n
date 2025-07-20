@@ -204,6 +204,12 @@
               "name": "Client Website",
               "value": "={{ $json.Website }}",
               "type": "string"
+            },
+            {
+              "id": "a2d1ba1c-af4b-45de-8c52-7d633ecfe1d8",
+              "name": "randomint",
+              "value": "={{ (Math.random()) }}",
+              "type": "string"
             }
           ]
         },
@@ -231,13 +237,13 @@
                 "options": {
                   "caseSensitive": true,
                   "leftValue": "",
-                  "typeValidation": "strict",
+                  "typeValidation": "loose",
                   "version": 2
                 },
                 "conditions": [
                   {
                     "id": "18c75510-8f54-4066-9c67-167c7f246e22",
-                    "leftValue": "={{ (Math.random()) }}",
+                    "leftValue": "={{ $json.randomint }}",
                     "rightValue": 0.25,
                     "operator": {
                       "type": "number",
@@ -255,13 +261,13 @@
                 "options": {
                   "caseSensitive": true,
                   "leftValue": "",
-                  "typeValidation": "strict",
+                  "typeValidation": "loose",
                   "version": 2
                 },
                 "conditions": [
                   {
                     "id": "454caaf6-2746-4845-9fa8-c09c3916ad8f",
-                    "leftValue": "={{ (Math.random()) }}",
+                    "leftValue": "={{ $json.randomint }}",
                     "rightValue": 1,
                     "operator": {
                       "type": "number",
@@ -276,6 +282,7 @@
             }
           ]
         },
+        "looseTypeValidation": true,
         "options": {
           "allMatchingOutputs": false
         }
@@ -288,7 +295,7 @@
       ],
       "id": "81914534-ed59-4fda-b895-918171d8a113",
       "name": "Mock Company Size Switch",
-      "alwaysOutputData": true,
+      "alwaysOutputData": false,
       "onError": "continueErrorOutput",
       "notes": "Randomly routes input to simulate company size for testing purposes."
     },
@@ -419,7 +426,7 @@
         "messages": {
           "values": [
             {
-              "content": "=You are evaluating inbound leads for a Polish M&A advisory firm.\nBased on the company name, website, and user message, score this lead from 1-10 for fit with a B2B SaaS investor. Include a one-sentence reason. Return a clean JSON object suitable for writing directly to a Google Sheet. Include only the following fields and appropriate values:\n\n- company_name\n- domain\n- industry\n- employee_count\n- country (extract only the country from the location string)\n- user_message (this is from the inbound lead form)\n- ai_score_and_justification (evaluate relevance of company to M&A target criteria, give score out of 100 and explain why)\n- pass_fail_flag (true/false)\n- high_fit_flag (true if company is an excellent fit, based on your judgment)\nHere is the data to evaluate:\nUser message: {{ $json['User Message'] }}\nCompany Name: {{ $json.clearbit.name }}\nCompany Website: {{ $json.clearbit.domain }}\nNumber of employees:{{ $json.clearbit.employees }}\nIndustry:{{ $json.clearbit.industry }}\nLocation: {{ $json.clearbit.location }}\nFoundedYear: {{ $json.clearbit.foundedYear }}\n"
+              "content": "=You are evaluating inbound leads for a Polish M&A advisory firm.\nBased on the company name, website, and user message, score this lead from 1-10 for fit with a B2B SaaS investor. Include a one-sentence reason. Return a clean JSON object suitable for writing directly to a Google Sheet. Include only the following fields and appropriate values:\n\n- company_name\n- domain\n- industry\n- employee_count\n- country (extract only the country from the location string)\n- user_message (this is from the inbound lead form)\n- ai_score_and_justification \n- pass_fail_flag (true/false)\n- high_fit_flag (true if company is an excellent fit, for scores ≥ 8)\nHere is the data to evaluate:\nUser message: {{ $('Normalize Input Fields').item.json['User Message'] }}\nCompany Name: {{ $json.clearbit.name }}\nCompany Website: {{ $json.clearbit.domain }}\nNumber of employees: {{ $json.clearbit.employees }}\nIndustry: {{ $json.clearbit.industry }}\nLocation: {{ $json.clearbit.location }}\nFoundedYear: {{ $json.clearbit.foundedYear }}\n"
             }
           ]
         },
@@ -566,7 +573,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "33798c33-de8b-448f-93c3-ab76c0c50f08",
+  "versionId": "85ed87cf-e4df-444d-aeac-1f275fe503b7",
   "meta": {
     "instanceId": "da304d8e345e6a6372efe6a610ad71d0184de1663c5a1439b6c3d0cd7698bb19"
   },
